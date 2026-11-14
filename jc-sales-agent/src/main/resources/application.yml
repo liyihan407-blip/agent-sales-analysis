@@ -1,0 +1,75 @@
+server:
+  port: ${SERVER_PORT:8087}
+spring:
+  application:
+    name: agent-sales-analysis
+  config:
+    import: optional:classpath:application-local.yml
+  main:
+    web-application-type: servlet
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/sales_agent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}
+    username: ${DB_USERNAME:sales_agent}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+  sql:
+    init:
+      # 演示数据含清理语句。Docker 仅在新数据库首次初始化时执行，不在后端重启时执行。
+      mode: ${DB_INIT_MODE:never}
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: ${AI_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode/v1}
+      api-key: ${AI_API_KEY:}
+      model-name: ${AI_MODEL_NAME:qwen-max}
+      temperature: 0.1
+      max-tokens: 2048
+    streaming-chat-model:
+      base-url: ${AI_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode/v1}
+      api-key: ${AI_API_KEY:}
+      model-name: ${AI_MODEL_NAME:qwen-max}
+      temperature: 0.1
+      max-tokens: 2048
+sa-token:
+  token-name: sa-token
+  timeout: 86400
+  is-concurrent: true
+  is-share: true
+  token-style: uuid
+  is-log: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+sales-agent:
+  tool:
+    anomaly-threshold-days: 5
+    trend-drop-threshold: 0.3
+logging:
+  level:
+    com.jichi.salesAgent: INFO
+    dev.langchain4j: INFO
+app:
+  auth:
+    enabled: ${APP_AUTH_ENABLED:true}

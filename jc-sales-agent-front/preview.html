@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JiChi AI · 登录后界面预览</title>
+  </head>
+  <body>
+    <!-- 单独展示原有页面；inert 禁止操作，不登录、不请求后端。 -->
+    <div id="app" inert></div>
+    <div style="position:fixed;top:20px;right:20px;z-index:1000;padding:6px 12px;border:1px solid #c7d2fe;border-radius:16px;background:#eef2ff;color:#4f46e5;font:12px sans-serif;pointer-events:none">仅界面预览</div>
+    <script type="module">
+      import { createApp } from 'vue'
+      import { createPinia } from 'pinia'
+      import ElementPlus from 'element-plus'
+      import 'element-plus/dist/index.css'
+      import * as icons from '@element-plus/icons-vue'
+      import zhCn from 'element-plus/es/locale/lang/zh-cn'
+      import ChatView from '/src/views/ChatView.vue'
+      import { useAuthStore } from '/src/stores/auth.js'
+      import { useChatStore } from '/src/stores/chat.js'
+      import '/src/assets/main.css'
+
+      const app = createApp(ChatView)
+      const pinia = createPinia()
+      app.use(pinia)
+      app.use(ElementPlus, { locale: zhCn })
+      for (const [name, icon] of Object.entries(icons)) app.component(name, icon)
+      // 仅修改本预览的内存数据，不写入浏览器登录态或历史对话。
+      useAuthStore(pinia).userInfo = { username: '预览用户', role: 'MANAGER' }
+      const chat = useChatStore(pinia)
+      chat.sessions = []
+      chat.activeSessionId = null
+      app.mount('#app')
+    </script>
+  </body>
+</html>

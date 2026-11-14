@@ -1,0 +1,23 @@
+{
+  "pages": [
+    { "path": "pages/chat/index", "style": { "navigationBarTitleText": "集驰 · 销售助手" } },
+    { "path": "pages/history/index", "style": { "navigationBarTitleText": "历史会话" } },
+    { "path": "pages/mine/index", "style": { "navigationBarTitleText": "我的" } },
+    { "path": "pages/login/index", "style": { "navigationBarTitleText": "登录" } },
+    { "path": "pages/settings/index", "style": { "navigationBarTitleText": "连接设置" } }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#f5f7fb",
+    "backgroundColor": "#f5f7fb"
+  },
+  "tabBar": {
+    "color": "#78869c", "selectedColor": "#3266ed", "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/chat/index", "text": "AI 分析" },
+      { "pagePath": "pages/history/index", "text": "会话" },
+      { "pagePath": "pages/mine/index", "text": "我的" }
+    ]
+  }
+}
